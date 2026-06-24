@@ -6,7 +6,7 @@ Autonomous AI business analyst that continuously monitors data, detects problems
 
 ## Executive Summary
 
-Business Time Machine is an AI-powered business analyst that continuously monitors business data, automatically identifies risks, investigates root causes, predicts future outcomes, and recommends actions before problems become costly. Unlike traditional dashboards and AI assistants that wait for users to ask questions, Business Time Machine proactively analyzes business activity and delivers decision-ready insights through a conversational interface.
+Business Time Machine is an AI-powered business analyst that continuously monitors business data, automatically identifies risks, investigates root causes, predicts future outcomes, and recommends actions before problems become costly. Unlike traditional dashboards and AI assistants that wait for users to ask questions, the Time Machine's goal is not simply to answer questions, but to continuously monitor business activity, identify risks, investigate root causes, predict future outcomes, and recommend actions.
 
 ## Project Vision
 
