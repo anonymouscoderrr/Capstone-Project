@@ -11,7 +11,7 @@ feature_columns = joblib.load("models/feature_columns.pkl")
 
 # Turn one request into a DataFrame for the model
 def make_prediction(input_data):
-    input_dict = input_data.dict()
+    input_dict = input_data.model_dump()
 
     row = {
         "Street Name": input_dict["Street_Name"],
