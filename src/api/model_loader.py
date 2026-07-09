@@ -1,5 +1,5 @@
-import joblib 
-
+import joblib
+import pandas as pd
 
 # Load the saved model pipeline
 pipeline = joblib.load("models/decision_tree_model.pkl")
