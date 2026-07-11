@@ -1,0 +1,26 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# Git files
+.git/
+.github/
+
+# VS Code settings
+.vscode/
+
+# Test cache
+.pytest_cache/
+
+# Python cache files
+.mypy_cache/
+
+# Operating system files
+.DS_Store
+Thumbs.db
