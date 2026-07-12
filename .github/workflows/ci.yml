@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - draft
+      - feature/api-development
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Download the project files
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # Install the Python version used by the project
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      # Install the project libraries
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Run the API tests
+      - name: Run tests
+        run: python -m pytest tests/test_api.py
+
+      # Make sure the API and saved pipeline load correctly
+      - name: Check pipeline loading
+        run: python -c "from src.api.main import app; print('API and pipeline loaded successfully')"
