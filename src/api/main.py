@@ -57,7 +57,7 @@ async def log_requests(request: Request, call_next):
 def health():
     # Record every health check request
     logger.info("Health endpoint accessed.")
-    return {"status": "healthy"}
+    return {"status": "ok"}
 
 
 # Predict maintenance risk for one road record

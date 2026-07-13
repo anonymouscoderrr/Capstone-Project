@@ -218,10 +218,28 @@ __marimo__/
 .streamlit/secrets.toml
 
 
-# Large local datasets
-data/
+# Ignore raw datasets only
+data/raw/
 
-# Python cache files
+# Keep only the final dashboard/model dataset
+data/processed/*
+!data/processed/model_data.csv
+
+# Python cache
 __pycache__/
-*.pyc
+*.py[cod]
 .pytest_cache/
+
+# VS Code
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
