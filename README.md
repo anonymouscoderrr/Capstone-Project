@@ -50,9 +50,9 @@ The project was designed to accomplish the following objectives:
 
 # Tools And Frameworks Used
 
-The project combines machine learning, web development, data visualization, and DevOps technologies.
+The project combines machine learning, web development, data visualization, and DevOps Tools/Frameworks.
 
-| Category | Technologies |
+| Category | Tools/Frameworks |
 |----------|--------------|
 | Programming Language | Python 3.13 |
 | Data Processing | Pandas, NumPy |
