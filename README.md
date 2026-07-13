@@ -62,8 +62,14 @@ This project applies machine learning to historical road complaint, weather, and
 - Priority road identification  
 - Machine learning performance visualization  
 
+---
+
+# Tools And Frameworks Used
+
+The project combines machine learning, web development, data visualization, and DevOps Tools/Frameworks.
 ## Tools And Frameworks Used
 
+| Category | Tools/Frameworks |
 | Category | Tools/Frameworks |
 |----------|--------------|
 | Programming Language | Python 3.13 |
@@ -664,5 +670,9 @@ Possible improvements include:
 ## Conclusion
 
 The Predictive Road Maintenance Decision Support System demonstrates how machine learning can support proactive infrastructure maintenance.
+
+By combining historical road complaints with weather and traffic information, the system identifies roads that may require maintenance before problems become more severe. The project includes a complete machine learning workflow, REST API, interactive dashboard, automated testing, CI/CD pipeline, and supporting documentation, providing a practical example of an end-to-end machine learning application.
+
+---
 
 By combining historical road complaints with weather and traffic information, the system identifies roads that may require maintenance before problems become more severe. The project includes a complete machine learning workflow, reusable pipeline, REST API, interactive dashboard, Docker deployment, automated testing, CI/CD automation, monitoring support, and technical documentation.
