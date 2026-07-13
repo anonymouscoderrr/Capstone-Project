@@ -52,16 +52,66 @@ Predicts whether a road record is considered Low Risk or High Risk.
 POST /predict
 ```
 
-Example Request
 
 ```json
 {
-    "Complaint Count": 18,
-    "temperature_2m (°F)": 76.5,
-    "precipitation (inch)": 0.10,
-    "snowfall (inch)": 0.0,
-    "wind_speed_10m (mp/h)": 8.4,
-    "Total Traffic": 2150
+  "Street_Name": "Broadway",
+  "Borough": "Manhattan",
+  "Year": 2024,
+  "Month": 7,
+  "Latitude": 40.7128,
+  "Longitude": -74.006,
+  "temperature_2m_F": 82.4,
+  "precipitation_inch": 0.15,
+  "snowfall_inch": 0.0,
+  "snow_depth_ft": 0.0,
+  "weather_code_wmo_code": 3,
+  "wind_speed_10m_mph": 7.2,
+  "Total_Traffic": 15843
+}
+```
+
+
+
+```
+POST /batch_predict
+```
+
+
+```json
+{
+  "records": [
+    {
+      "Street_Name": "Broadway",
+      "Borough": "Manhattan",
+      "Year": 2024,
+      "Month": 7,
+      "Latitude": 40.7128,
+      "Longitude": -74.006,
+      "temperature_2m_F": 82.4,
+      "precipitation_inch": 0.15,
+      "snowfall_inch": 0.0,
+      "snow_depth_ft": 0.0,
+      "weather_code_wmo_code": 3,
+      "wind_speed_10m_mph": 7.2,
+      "Total_Traffic": 15843
+    },
+    {
+      "Street_Name": "Queens Boulevard",
+      "Borough": "Queens",
+      "Year": 2024,
+      "Month": 1,
+      "Latitude": 40.7282,
+      "Longitude": -73.7949,
+      "temperature_2m_F": 34.6,
+      "precipitation_inch": 0.75,
+      "snowfall_inch": 2.4,
+      "snow_depth_ft": 0.4,
+      "weather_code_wmo_code": 71,
+      "wind_speed_10m_mph": 12.8,
+      "Total_Traffic": 9231
+    }
+  ]
 }
 ```
 

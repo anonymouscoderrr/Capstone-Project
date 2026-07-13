@@ -121,7 +121,7 @@ st.caption(
 
 st.dataframe(
     filtered_data,
-    use_container_width=True,
+    width="stretch",
 )
 
 
@@ -163,9 +163,8 @@ borough_chart.update_layout(
 
 st.plotly_chart(
     borough_chart,
-    use_container_width=True,
+    width="stretch",
 )
-
 
 # Show how road complaints change over time
 st.subheader("Road Complaints Over Time")
@@ -213,7 +212,7 @@ complaint_trend_chart.update_layout(
 
 st.plotly_chart(
     complaint_trend_chart,
-    use_container_width=True,
+        width="stretch",
 )
 
 
@@ -266,7 +265,7 @@ risk_chart.update_layout(
 
 st.plotly_chart(
     risk_chart,
-    use_container_width=True,
+        width="stretch",
 )
 
 
@@ -346,14 +345,14 @@ else:
 
     st.plotly_chart(
         priority_chart,
-        use_container_width=True,
+        width="stretch",
     )
 
     st.subheader("Priority Road Details")
 
     st.dataframe(
         priority_roads,
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
 
@@ -433,7 +432,7 @@ performance_chart.update_layout(
 
 st.plotly_chart(
     performance_chart,
-    use_container_width=True,
+        width="stretch",
 )
 
 st.write("")

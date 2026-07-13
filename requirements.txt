@@ -9,3 +9,12 @@ httpx
 streamlit
 plotly
 requests
+
+# python -m uvicorn src.api.main:app --reload
+# Open http://127.0.0.1:8000/docs
+# Execute /health
+# Execute /predict
+# Execute /batch_predict
+# python -m streamlit run src/dashboard/app.py
+# Show the dashboard.
+
