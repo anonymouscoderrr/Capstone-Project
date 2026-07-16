@@ -1,8 +1,8 @@
-# RoadWise AI API Documentation
+#  AI API Documentation
 
 ## Overview
 
-The RoadWise AI API provides the machine learning prediction service that powers the RoadWise AI Maintenance Scenario Simulator.
+The  AI API provides the machine learning prediction service that powers the  AI Maintenance Scenario Simulator.
 
 The API loads the trained Decision Tree model, validates incoming requests, generates maintenance predictions, and supports both single-road and batch prediction workflows.
 
@@ -333,6 +333,6 @@ Possible enhancements include:
 
 # Summary
 
-The RoadWise AI API serves as the prediction engine for the RoadWise AI Maintenance Scenario Simulator.
+The  AI API serves as the prediction engine for the  AI Maintenance Scenario Simulator.
 
 It provides reliable machine learning inference through a lightweight FastAPI service, enabling both individual and batch predictions. By supporting the dashboard's full-borough evaluation workflow, the API allows historical road data to be transformed into ranked inspection priorities, operational workload estimates, and explainable maintenance recommendations.

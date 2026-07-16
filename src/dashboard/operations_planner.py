@@ -5,19 +5,19 @@ import pandas as pd
 import streamlit as st
 
 
-# ---------------------------------------------------------
+
 # Page setup
-# ---------------------------------------------------------
+
 
 st.set_page_config(
-    page_title="RoadWise AI Scenario Simulator",
+    page_title=" AI Road Maintenance Prediction Simulator",
     layout="wide",
 )
 
 
-# ---------------------------------------------------------
+
 # Load data and saved model
-# ---------------------------------------------------------
+
 
 @st.cache_data
 def load_data():
@@ -35,22 +35,21 @@ data = load_data()
 pipeline, feature_columns = load_model()
 
 
-# ---------------------------------------------------------
-# Page title
-# ---------------------------------------------------------
 
-st.title("RoadWise AI — Maintenance Scenario Simulator")
+# Page title
+
+
+st.title(" AI Road Maintenance Prediction Simulator")
 
 st.write(
     "Create a future road-maintenance scenario and receive an automated "
-    "maintenance outlook, prioritized inspection list, plain-language "
+    "maintenance outlook, prioritized inspection list, simple "
     "explanations, and recommended next steps."
 )
 
 
-# ---------------------------------------------------------
 # Sidebar controls
-# ---------------------------------------------------------
+
 
 st.sidebar.header("Future Planning Scenario")
 
@@ -97,9 +96,9 @@ generate_forecast = st.sidebar.button(
 )
 
 
-# ---------------------------------------------------------
+
 # Scenario assumptions
-# ---------------------------------------------------------
+
 
 weather_settings = {
     "Normal": {
@@ -150,9 +149,9 @@ scenario_bonus = {
 }
 
 
-# ---------------------------------------------------------
+
 # Helper functions
-# ---------------------------------------------------------
+
 
 def normalize_score(series):
     minimum = series.min()
@@ -457,9 +456,8 @@ def run_scenario(
     return scenario_profiles
 
 
-# ---------------------------------------------------------
+
 # Generate simulation
-# ---------------------------------------------------------
 
 if generate_forecast:
 
@@ -495,6 +493,7 @@ if generate_forecast:
     )
 
     # Evaluate every available street profile in the selected borough.
+
     road_profiles = all_road_profiles.copy()
 
     if road_profiles.empty:
@@ -592,9 +591,9 @@ if generate_forecast:
         )
 
 
-        # ---------------------------------------------------------
+        
         # Maintenance outlook
-        # ---------------------------------------------------------
+      
 
         st.header("Maintenance Outlook")
 
@@ -627,9 +626,9 @@ if generate_forecast:
         )
 
 
-        # ---------------------------------------------------------
+
         # Automated maintenance brief
-        # ---------------------------------------------------------
+       
 
         st.subheader("Automated Maintenance Brief")
 
@@ -682,9 +681,9 @@ if generate_forecast:
         st.info(summary_text)
 
 
-        # ---------------------------------------------------------
+
         # Scenario comparison
-        # ---------------------------------------------------------
+       
 
         st.header(
             "How the Selected Scenario Changes the Outlook"
@@ -759,9 +758,9 @@ if generate_forecast:
             )
 
 
-        # ---------------------------------------------------------
+    
         # Operational planning estimate
-        # ---------------------------------------------------------
+      
 
         st.header("Operational Planning Estimate")
 
@@ -794,10 +793,9 @@ if generate_forecast:
         )
 
 
-        # ---------------------------------------------------------
+       
         # Priority road report
-        # ---------------------------------------------------------
-
+  
         st.header(
             "Recommended Road Inspection Priorities"
         )
@@ -825,9 +823,9 @@ if generate_forecast:
         )
 
 
-        # ---------------------------------------------------------
+        
         # Road explanations
-        # ---------------------------------------------------------
+   
 
         st.header("Why These Roads Were Prioritized")
 
@@ -873,9 +871,8 @@ if generate_forecast:
                 )
 
 
-        # ---------------------------------------------------------
         # Recommended next steps
-        # ---------------------------------------------------------
+        
 
         st.header("Recommended Next Steps")
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide provides solutions to common issues that may occur while running the RoadWise AI application.
+This guide provides solutions to common issues that may occur while running the  AI application.
 
 The troubleshooting steps cover:
 
@@ -275,7 +275,7 @@ Verify:
 
 before rerunning the simulation.
 
-Remember that RoadWise AI generates decision-support recommendations using historical data and machine learning predictions. Final maintenance decisions should always be confirmed through field inspection.
+Remember that the AI system generates decision-support recommendations using historical data and machine learning predictions. Final maintenance decisions should always be confirmed through field inspection.
 
 ---
 

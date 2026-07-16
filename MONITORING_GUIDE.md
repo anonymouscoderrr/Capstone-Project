@@ -1,12 +1,12 @@
-# RoadWise AI Monitoring Guide
+# Predictive Road Maintenece AI Monitoring Guide
 
 ## Overview
 
-Monitoring is essential for ensuring that RoadWise AI continues to operate reliably after deployment.
+Monitoring is essential for ensuring that Predictive Road Maintenece AI continues to operate reliably after deployment.
 
 The goal of monitoring is to verify that the machine learning model, REST API, and Maintenance Scenario Simulator continue to function correctly while providing accurate and timely recommendations.
 
-RoadWise AI monitoring focuses on four major areas:
+Predictive Road Maintenece AI monitoring focuses on four major areas:
 
 - Application Health
 - API Performance
@@ -119,7 +119,7 @@ The dashboard should remain responsive even when evaluating thousands of roadway
 
 # 6. Logging
 
-RoadWise AI records important application events using centralized logging.
+Predictive Road Maintenece AI records important application events using centralized logging.
 
 Examples include:
 
@@ -167,6 +167,6 @@ These tools would provide real-time dashboards, alerts, and long-term performanc
 
 # Summary
 
-RoadWise AI monitoring extends beyond traditional API monitoring by also tracking the performance of the AI Maintenance Scenario Simulator.
+Predictive Road Maintenece AI monitoring extends beyond traditional API monitoring by also tracking the performance of the AI Maintenance Scenario Simulator.
 
 Monitoring application health, machine learning predictions, scenario execution, and operational planning outputs helps ensure that the system continues to provide reliable roadway maintenance recommendations.
