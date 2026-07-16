@@ -2,37 +2,47 @@
 
 ## Overview
 
-This guide documents common issues that may occur while setting up, running, or testing the Predictive Road Maintenance Decision Support System.
+This guide provides solutions to common issues that may occur while running the RoadWise AI application.
+
+The troubleshooting steps cover:
+
+- FastAPI
+- Streamlit Dashboard
+- Machine Learning Model
+- Data Loading
+- Scenario Simulator
 
 ---
 
-# API Does Not Start
+# 1. API Does Not Start
 
 ## Problem
 
-The FastAPI server fails to start.
+The FastAPI server does not start.
 
-### Possible Causes
+Example:
 
-- Virtual environment is not activated.
-- Project dependencies are not installed.
-- Incorrect command was used.
-
-### Solution
-
-Activate the virtual environment.
-
-```bash
-.venv\Scripts\Activate.ps1
+```
+ModuleNotFoundError
 ```
 
-Install dependencies.
+## Possible Causes
+
+- Missing Python dependencies
+- Incorrect working directory
+- Typographical error in the startup command
+
+## Solution
+
+Verify that you are inside the project root.
+
+Run:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Run the API.
+Start the API again:
 
 ```bash
 uvicorn src.api.main:app --reload
@@ -40,204 +50,269 @@ uvicorn src.api.main:app --reload
 
 ---
 
-# Dashboard Does Not Open
+# 2. Dashboard Does Not Start
 
 ## Problem
 
-The Streamlit dashboard does not launch.
+The Streamlit dashboard fails to launch.
 
-### Solution
+## Solution
 
-Run:
+Verify that Streamlit is installed.
 
 ```bash
-streamlit run src/dashboard/app.py
+pip install streamlit
 ```
 
-Verify that the processed dataset exists:
+Launch the dashboard:
+
+```bash
+python -m streamlit run src/dashboard/operations_planner.py
+```
+
+---
+
+# 3. Model File Not Found
+
+## Problem
+
+```
+FileNotFoundError
+```
+
+or
+
+```
+decision_tree_model.pkl not found
+```
+
+## Solution
+
+Verify the following files exist:
+
+```
+models/
+
+decision_tree_model.pkl
+feature_columns.pkl
+```
+
+These files must be generated before running the application.
+
+---
+
+# 4. Processed Dataset Missing
+
+## Problem
+
+The dashboard reports that the processed dataset cannot be loaded.
+
+## Solution
+
+Verify the following file exists.
 
 ```
 data/processed/model_data.csv
 ```
 
+If the file is missing, rerun the preprocessing notebook to regenerate the processed dataset.
+
 ---
 
-# ModuleNotFoundError: No module named 'src'
+# 5. Prediction Endpoint Returns Validation Error
 
 ## Problem
 
-Pytest cannot locate the project modules.
+```
+422 Unprocessable Entity
+```
 
-### Solution
+## Cause
 
-Run tests using:
+The request does not match the expected Pydantic schema.
+
+## Solution
+
+Verify that:
+
+- Required fields are included.
+- Field names match the API documentation.
+- Numeric values are valid.
+
+Swagger UI can be used to verify the request format.
+
+```
+http://127.0.0.1:8000/docs
+```
+
+---
+
+# 6. Dashboard Appears Slow
+
+## Problem
+
+The dashboard requires several seconds to generate results.
+
+## Cause
+
+This is expected behavior.
+
+The current implementation evaluates **every available street profile** within the selected borough before ranking inspection priorities.
+
+Larger boroughs naturally require more processing than smaller boroughs.
+
+## Solution
+
+Wait for the simulation to complete.
+
+The number of **Priority Roads to Display** affects only how many ranked roads are shown—not how many roads are evaluated.
+
+---
+
+# 7. No Roads Displayed
+
+## Problem
+
+The priority table is empty.
+
+## Possible Causes
+
+- The selected borough contains no processed records.
+- Data filtering removed all matching roads.
+
+## Solution
+
+Choose another borough and rerun the simulation.
+
+Verify that the processed dataset contains roadway records for the selected borough.
+
+---
+
+# 8. FastAPI Port Already in Use
+
+## Problem
+
+```
+Address already in use
+```
+
+## Solution
+
+Another application is already using port:
+
+```
+8000
+```
+
+Stop the existing process or use another port.
+
+Example:
 
 ```bash
-python -m pytest
+uvicorn src.api.main:app --reload --port 8001
 ```
 
-instead of
+---
+
+# 9. Streamlit Port Already in Use
+
+## Problem
+
+Streamlit cannot start.
+
+## Solution
+
+Port:
+
+```
+8501
+```
+
+is already occupied.
+
+Start Streamlit using another port.
 
 ```bash
-pytest
+python -m streamlit run src/dashboard/operations_planner.py --server.port 8502
 ```
-
-Running the tests as a Python module ensures the project root is included in the module search path.
 
 ---
 
-# GitHub Actions Fails
+# 10. Swagger Page Does Not Load
 
 ## Problem
 
-The CI workflow reports failed tests.
+```
+http://127.0.0.1:8000/docs
+```
 
-### Possible Causes
+does not open.
 
-- Health endpoint response does not match the expected test result.
-- Missing project dependencies.
-- Test files were modified without updating expected outputs.
+## Solution
 
-### Solution
+Verify that the FastAPI server is running before opening Swagger.
 
-Run the tests locally before pushing.
+Restart the server if necessary.
+
+---
+
+# 11. Prediction Results Seem Incorrect
+
+## Possible Causes
+
+- Incorrect input values
+- Unrealistic weather scenario
+- Invalid traffic assumptions
+
+## Recommendation
+
+Verify:
+
+- Borough
+- Planning date
+- Weather scenario
+- Traffic level
+
+before rerunning the simulation.
+
+Remember that RoadWise AI generates decision-support recommendations using historical data and machine learning predictions. Final maintenance decisions should always be confirmed through field inspection.
+
+---
+
+# 12. Common Startup Commands
+
+## FastAPI
 
 ```bash
-python -m pytest
+uvicorn src.api.main:app --reload
 ```
-
-Verify that all tests pass before committing changes.
 
 ---
 
-# Git Push Rejected
-
-## Problem
-
-Git reports:
-
-```
-non-fast-forward
-```
-
-### Solution
-
-Pull the latest changes before pushing.
+## Streamlit
 
 ```bash
-git pull --rebase origin feature/api-development
+python -m streamlit run src/dashboard/operations_planner.py
 ```
-
-Resolve any merge conflicts and continue the rebase.
 
 ---
 
-# Merge Conflict During Rebase
-
-## Problem
-
-Git reports merge conflicts while rebasing.
-
-### Solution
-
-Resolve the conflicting files manually.
-
-After resolving:
+## Docker
 
 ```bash
-git add .
-git rebase --continue
-```
-
-Repeat until the rebase completes successfully.
-
----
-
-# Docker Build Fails
-
-## Problem
-
-The Docker image cannot be created.
-
-### Possible Causes
-
-- Docker Desktop is not running.
-- Missing project dependencies.
-- Invalid Dockerfile configuration.
-
-### Solution
-
-Verify Docker Desktop is running.
-
-Rebuild the image.
-
-```bash
-docker build -t road-maintenance-api .
+docker compose up --build
 ```
 
 ---
 
-# Large File Push Rejected
+# Need More Help?
 
-## Problem
+If the application still does not run correctly:
 
-GitHub rejects large dataset files.
+1. Verify all dependencies are installed.
+2. Confirm the model files exist.
+3. Confirm the processed dataset exists.
+4. Review the application logs.
+5. Restart the API and dashboard.
 
-### Solution
-
-Only include the processed dataset required for the dashboard.
-
-Keep large raw datasets outside of the repository 
-
----
-
-# Dashboard Displays Incorrect Data
-
-## Problem
-
-Charts or metrics appear incorrect.
-
-### Possible Causes
-
-- Filters are applied.
-- The processed dataset has not been regenerated.
-- The dashboard is loading an outdated CSV.
-
-### Solution
-
-Verify the active filters.
-
-Regenerate the processed dataset if necessary.
-
-Restart the Streamlit application.
-
----
-
-# Unit Tests Fail
-
-## Problem
-
-One or more automated tests fail.
-
-### Solution
-
-Run:
-
-```bash
-python -m pytest
-```
-
-Review the error message.
-
-Verify that the API responses still match the expected test values.
-
----
-
-# Additional Help
-
-If problems continue:
-
-- Verify all required Python packages are installed.
-- Confirm the virtual environment is activated.
-- Review the deployment and API documentation.
-- Check GitHub Actions logs for detailed error messages.
+Most startup issues are caused by missing files, incorrect working directories, or missing Python packages.

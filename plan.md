@@ -205,31 +205,49 @@ The project uses six public datasets that provide different information about ro
 - `MONITORING_GUIDE.md`.
 
 #### Phase 2E: Dashboard Development
-**Goal:** Build an interactive dashboard for predictions and insights.
+
+**Goal:** Build an interactive AI-powered maintenance planning dashboard that transforms machine learning predictions into operational inspection recommendations.
 
 **Activities:**
-- Display road maintenance trends and dataset summaries.
-- Show predicted risk on maps and charts.
-- Visualize model metrics and feature importance.
+
+- Develop an interactive Streamlit dashboard for maintenance planning.
+- Build an AI Scenario Simulator that allows users to create future roadway conditions.
+- Allow users to select a borough, planning date, weather scenario, traffic level, and number of priority roads to display.
+- Evaluate every available street profile within the selected borough using the trained Decision Tree model.
+- Rank all evaluated roads by inspection priority.
+- Compare simulated conditions against a normal planning scenario.
+- Generate operational planning estimates, including expected workload, suggested field teams, and estimated workdays.
+- Provide explainable recommendations describing why roads were prioritized.
+- Generate automated maintenance summaries and recommended next steps.
 
 **Deliverables:**
-- Interactive dashboard.
-- Model visualizations.
-- Dashboard user guide.
+
+- Interactive Streamlit dashboard.
+- AI Scenario Simulator.
+- Inspection Priority Ranking Engine.
+- Operational Planning Engine.
+- Automated Maintenance Brief.
+- Scenario Comparison dashboard.
+- Dashboard User Guide.
 
 #### Phase 2F: Documentation and Final Presentation
-**Goal:** Finish all documentation and prepare the final presentation.
+
+**Goal:** Complete the technical documentation, business presentation materials, and prepare the final project demonstration.
 
 **Activities:**
-- Complete `README.md`.
-- Add API, deployment, monitoring, and model documentation.
-- Clean up the repository.
-- Prepare the slide deck and demo plan.
+
+- Complete the technical README.
+- Create API, deployment, monitoring, and dashboard documentation.
+- Prepare business-oriented presentation materials.
+- Organize the GitHub repository.
+- Prepare the final project demonstration.
 
 **Deliverables:**
-- Final documentation set.
+
+- Technical documentation.
+- Business presentation materials.
 - Organized GitHub repository.
-- Presentation materials.
+- Final project demonstration.
 
 ## 4. Quick Links (will be updated regularly)
 
@@ -241,4 +259,3 @@ The project uses six public datasets that provide different information about ro
 
 
 
-* Maybe Predict a Maintenance Risk Score from 0–100.
