@@ -12,7 +12,7 @@ The proposed solution addresses this challenge by analyzing historical complaint
 
 <div align="center">
 
-<img src="image(1).png" width="650">
+<img src="assets/image(1).png" width="650">
 
 </div>
 
@@ -46,7 +46,7 @@ Instead of reviewing thousands of individual records, transportation planners re
 
 The result is a planning process that is faster, more organized, and easier to communicate across maintenance teams.
 
-![From Data To Decisions](image(2).png)
+![From Data To Decisions](assets/image(2).png)
 
 ---
 
@@ -60,7 +60,7 @@ By considering these factors together, planners gain a broader understanding of 
 
 <div align="center">
 
-<img src="image(3).png" width="750">
+<img src="assets/image(3).png" width="750">
 
 </div>
 
@@ -136,7 +136,7 @@ Although the proposed solution does not replace engineering expertise or field i
 
 <div align="center">
 
-<img src="image(4).png" width="350">
+<img src="assets/image(4).png" width="350">
 
 </div>
 
