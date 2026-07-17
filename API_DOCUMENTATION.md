@@ -129,13 +129,19 @@ Example request:
 
 ```json
 {
-    "borough": "Bronx",
-    "complaint_count": 52,
-    "traffic_volume": 420.5,
-    "temperature": 82,
-    "precipitation": 0,
-    "snowfall": 0,
-    "month": 7
+  "Street_Name": "WESTCHESTER AVENUE",
+  "Borough": "BRONX",
+  "Year": 2026,
+  "Month": 7,
+  "Latitude": 40.8335,
+  "Longitude": -73.8616,
+  "temperature_2m_F": 78.0,
+  "precipitation_inch": 0.15,
+  "snowfall_inch": 0.0,
+  "snow_depth_ft": 0.0,
+  "weather_code_wmo_code": 3,
+  "wind_speed_10m_mph": 9.5,
+  "Total_Traffic": 18500
 }
 ```
 
@@ -174,7 +180,38 @@ Example response:
 
 ```json
 {
-    "predictions": [1,0,1,1,0]
+  "records": [
+    {
+      "Street_Name": "WESTCHESTER AVENUE",
+      "Borough": "BRONX",
+      "Year": 2026,
+      "Month": 7,
+      "Latitude": 40.8335,
+      "Longitude": -73.8616,
+      "temperature_2m_F": 78.0,
+      "precipitation_inch": 0.15,
+      "snowfall_inch": 0.0,
+      "snow_depth_ft": 0.0,
+      "weather_code_wmo_code": 3,
+      "wind_speed_10m_mph": 9.5,
+      "Total_Traffic": 18500
+    },
+    {
+      "Street_Name": "BROADWAY",
+      "Borough": "MANHATTAN",
+      "Year": 2026,
+      "Month": 7,
+      "Latitude": 40.7128,
+      "Longitude": -74.0060,
+      "temperature_2m_F": 82.0,
+      "precipitation_inch": 0.40,
+      "snowfall_inch": 0.0,
+      "snow_depth_ft": 0.0,
+      "weather_code_wmo_code": 61,
+      "wind_speed_10m_mph": 11.0,
+      "Total_Traffic": 26500
+    }
+  ]
 }
 ```
 
