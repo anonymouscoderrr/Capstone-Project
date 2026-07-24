@@ -87,7 +87,7 @@ Capstone-Project/
 │   └── processed/
 │
 ├── models/
-│   ├── decision_tree_model.pkl
+│   ├── best_model.pkl
 │   └── feature_columns.pkl
 │
 ├── notebooks/
