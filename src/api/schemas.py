@@ -1,35 +1,43 @@
-from pydantic import BaseModel
-from typing import List, Optional
+from pydantic import BaseModel, Field
 
-# Information for predicting one road
+
 class PredictionInput(BaseModel):
-    Street_Name: str
+    Year: int = Field(..., ge=2012, le=2100)
+    Month: int = Field(..., ge=1, le=12)
+
+    Latitude: float
+    Longitude: float
+
+    Avg_Temperature: float
+    Total_Precipitation: float = Field(..., ge=0)
+    Total_Snowfall: float = Field(..., ge=0)
+    Avg_Snow_Depth: float = Field(..., ge=0)
+    Avg_Wind_Speed: float = Field(..., ge=0)
+
+    Avg_Daily_Traffic: float = Field(..., ge=0)
+    Traffic_Observation_Days: int = Field(..., ge=0)
+    Traffic_Data_Available: int = Field(..., ge=0, le=1)
+
+    Previous_Month_Complaints: float = Field(..., ge=0)
+    Complaints_Last_3_Months: float = Field(..., ge=0)
+    Average_Complaints_Last_3_Months: float = Field(..., ge=0)
+    Complaints_Last_6_Months: float = Field(..., ge=0)
+
     Borough: str
-    Year: int
-    Month: int
-    Latitude: Optional[float] = None
-    Longitude: Optional[float] = None
-    temperature_2m_F: float
-    precipitation_inch: float
-    snowfall_inch: float
-    snow_depth_ft: float
-    weather_code_wmo_code: int
-    wind_speed_10m_mph: float
-    Total_Traffic: float
+
+   
+from pydantic import BaseModel
 
 
-# Information returned after making one prediction
 class PredictionResponse(BaseModel):
     prediction: int
     risk_label: str
     risk_score: float
 
 
-# Allow multiple roads to be predicted at once
 class BatchPredictionInput(BaseModel):
-    records: List[PredictionInput]
+    records: list[PredictionInput]
 
 
-# Return the predictions for all roads
 class BatchPredictionResponse(BaseModel):
-    predictions: List[PredictionResponse]
+    predictions: list[PredictionResponse]

@@ -54,8 +54,10 @@ Before starting the application, verify the following files exist.
 ```
 models/
 │
-├── decision_tree_model.pkl
-└── feature_columns.pkl
+├── best_model.pkl
+├── best_model.json
+├── feature_columns.pkl
+└── model_results.csv
 
 data/
 │

@@ -11,7 +11,7 @@ The dashboard combines:
 - NYC 311 road complaint history
 - Historical weather information
 - Traffic data
-- Decision Tree predictions
+- Logistic Regression predictions
 - Inspection priority scoring
 - Operational planning estimates
 
@@ -54,7 +54,7 @@ Build One Profile Per Street
 Evaluate Every Available Street
         │
         ▼
-Generate Decision Tree Predictions
+Generate Logistic Regression Predictions
         │
         ▼
 Calculate Inspection Priorities
@@ -161,7 +161,7 @@ Generate Maintenance Forecast
 The dashboard then:
 
 1. Creates one aggregated historical profile per street.
-2. Runs the Decision Tree model for every street profile.
+2. Runs the Logistic Regression model for every street profile.
 3. Calculates a composite Inspection Priority score.
 4. Ranks all evaluated roads.
 5. Generates workload and staffing estimates.
@@ -381,11 +381,13 @@ Historical rows are first aggregated by street because the processed dataset con
 The result is one profile per street containing information such as:
 
 - Average geographic location
-- Historical complaint count
-- Average traffic estimate
-- Selected future year and month
-- Selected weather assumptions
-- Selected traffic adjustment
+- Historical complaint history
+- Rolling complaint features
+- Average daily traffic
+- Historical weather features
+- Selected planning year and month
+- User-selected weather scenario
+- User-selected traffic adjustment
 
 The model evaluates all profiles in one batch, ranks the outputs, and displays only the highest-priority results.
 
@@ -402,8 +404,7 @@ data/processed/model_data.csv
 The processed dataset contains approximately:
 
 ```text
-311,796 historical records
-15 columns
+The processed dataset (model_data.csv) contains the engineered features created during the data preparation phase and serves as the input for both the machine learning pipeline and dashboard simulation.
 ```
 
 These are historical observations rather than 311,796 unique roads.
@@ -417,11 +418,12 @@ The number of unique evaluated street profiles depends on the selected borough.
 The dashboard loads the following files:
 
 ```text
-models/decision_tree_model.pkl
+models/best_model.pkl
 models/feature_columns.pkl
+models/model_results.csv
 ```
 
-The first file contains the trained Decision Tree model.
+The first file contains the final trained Logistic Regression pipeline selected during model evaluation.
 
 The second preserves the expected model feature order during inference.
 
@@ -487,6 +489,6 @@ During the comparison, focus on:
 
 # Purpose
 
-The RoadWise AI dashboard transforms historical road complaints, weather information, traffic data, and machine learning predictions into a ranked inspection plan.
+The AI dashboard transforms historical complaint data, engineered weather and traffic features, and Logistic Regression predictions into an inspection planning tool. It helps prioritize road inspections, compare future planning scenarios, and estimate operational workload to support proactive maintenance decisions.
 
 Its main purpose is to demonstrate how a machine learning model can be extended beyond prediction into scenario simulation, explainability, and operational planning.

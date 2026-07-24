@@ -4,9 +4,9 @@
 
 The  AI API provides the machine learning prediction service that powers the  AI Maintenance Scenario Simulator.
 
-The API loads the trained Decision Tree model, validates incoming requests, generates maintenance predictions, and supports both single-road and batch prediction workflows.
+The API loads the final trained Logistic Regression pipeline, validates incoming requests, generates maintenance risk predictions, and supports both single-road and batch prediction workflows.
 
-Although the Streamlit dashboard is the primary user interface, the API serves as the prediction engine responsible for evaluating road profiles and returning maintenance predictions.
+Although the Streamlit dashboard is the primary user interface, the API serves as the prediction engine responsible for evaluating road profiles and returning maintenance risk predictions.
 
 The API supports:
 
@@ -14,9 +14,9 @@ The API supports:
 - Single-road prediction
 - Batch prediction
 - JSON-based communication
-- Integration with the Streamlit Maintenance Scenario Simulator
+- Integration with the RoadWise AI Maintenance Scenario Simulator
 
-The dashboard uses the batch prediction workflow to evaluate every available street profile within the selected borough, rank the results by inspection priority, and generate operational planning recommendations.
+The dashboard uses the prediction workflow to evaluate road profiles, estimate maintenance risk, rank inspection priorities, and generate operational planning recommendations.
 
 ---
 
@@ -129,19 +129,23 @@ Example request:
 
 ```json
 {
-  "Street_Name": "WESTCHESTER AVENUE",
-  "Borough": "BRONX",
-  "Year": 2026,
+  "Year": 2025,
   "Month": 7,
   "Latitude": 40.8335,
   "Longitude": -73.8616,
-  "temperature_2m_F": 78.0,
-  "precipitation_inch": 0.15,
-  "snowfall_inch": 0.0,
-  "snow_depth_ft": 0.0,
-  "weather_code_wmo_code": 3,
-  "wind_speed_10m_mph": 9.5,
-  "Total_Traffic": 18500
+  "Avg_Temperature": 76.0,
+  "Total_Precipitation": 4.1,
+  "Total_Snowfall": 0.0,
+  "Avg_Snow_Depth": 0.0,
+  "Avg_Wind_Speed": 8.2,
+  "Avg_Daily_Traffic": 18500.0,
+  "Traffic_Observation_Days": 31,
+  "Traffic_Data_Available": 1,
+  "Previous_Month_Complaints": 3.0,
+  "Complaints_Last_3_Months": 8.0,
+  "Average_Complaints_Last_3_Months": 2.67,
+  "Complaints_Last_6_Months": 14.0,
+  "Borough": "BRONX"
 }
 ```
 
@@ -149,7 +153,9 @@ Example response:
 
 ```json
 {
-    "prediction": 1
+  "prediction": 1,
+  "risk_label": "High Maintenance Risk",
+  "risk_score": 72.48
 }
 ```
 
@@ -182,37 +188,56 @@ Example response:
 {
   "records": [
     {
-      "Street_Name": "WESTCHESTER AVENUE",
-      "Borough": "BRONX",
-      "Year": 2026,
+      "Year": 2025,
       "Month": 7,
       "Latitude": 40.8335,
       "Longitude": -73.8616,
-      "temperature_2m_F": 78.0,
-      "precipitation_inch": 0.15,
-      "snowfall_inch": 0.0,
-      "snow_depth_ft": 0.0,
-      "weather_code_wmo_code": 3,
-      "wind_speed_10m_mph": 9.5,
-      "Total_Traffic": 18500
+      "Avg_Temperature": 76.0,
+      "Total_Precipitation": 4.1,
+      "Total_Snowfall": 0.0,
+      "Avg_Snow_Depth": 0.0,
+      "Avg_Wind_Speed": 8.2,
+      "Avg_Daily_Traffic": 18500.0,
+      "Traffic_Observation_Days": 31,
+      "Traffic_Data_Available": 1,
+      "Previous_Month_Complaints": 3.0,
+      "Complaints_Last_3_Months": 8.0,
+      "Average_Complaints_Last_3_Months": 2.67,
+      "Complaints_Last_6_Months": 14.0,
+      "Borough": "BRONX"
     },
     {
-      "Street_Name": "BROADWAY",
-      "Borough": "MANHATTAN",
-      "Year": 2026,
+      "Year": 2025,
       "Month": 7,
       "Latitude": 40.7128,
-      "Longitude": -74.0060,
-      "temperature_2m_F": 82.0,
-      "precipitation_inch": 0.40,
-      "snowfall_inch": 0.0,
-      "snow_depth_ft": 0.0,
-      "weather_code_wmo_code": 61,
-      "wind_speed_10m_mph": 11.0,
-      "Total_Traffic": 26500
+      "Longitude": -74.006,
+      "Avg_Temperature": 76.0,
+      "Total_Precipitation": 4.1,
+      "Total_Snowfall": 0.0,
+      "Avg_Snow_Depth": 0.0,
+      "Avg_Wind_Speed": 8.2,
+      "Avg_Daily_Traffic": 26500.0,
+      "Traffic_Observation_Days": 31,
+      "Traffic_Data_Available": 1,
+      "Previous_Month_Complaints": 1.0,
+      "Complaints_Last_3_Months": 3.0,
+      "Average_Complaints_Last_3_Months": 1.0,
+      "Complaints_Last_6_Months": 6.0,
+      "Borough": "MANHATTAN"
     }
   ]
 }
+
+Example response:
+
+```json
+{
+  "prediction": 1,
+  "risk_label": "High Maintenance Risk",
+  "risk_score": 72.48
+}
+```
+
 ```
 
 ---

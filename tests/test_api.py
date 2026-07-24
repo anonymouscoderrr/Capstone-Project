@@ -11,19 +11,23 @@ client = TestClient(app)
 
 # Sample road data used in the prediction tests
 sample_record = {
-    "Street_Name": "Broadway",
-    "Borough": "Manhattan",
     "Year": 2024,
     "Month": 6,
     "Latitude": 40.7128,
-    "Longitude": -74.006,
-    "temperature_2m_F": 75,
-    "precipitation_inch": 0.2,
-    "snowfall_inch": 0,
-    "snow_depth_ft": 0,
-    "weather_code_wmo_code": 3,
-    "wind_speed_10m_mph": 8,
-    "Total_Traffic": 12000
+    "Longitude": -74.0060,
+    "Avg_Temperature": 75.0,
+    "Total_Precipitation": 0.20,
+    "Total_Snowfall": 0.0,
+    "Avg_Snow_Depth": 0.0,
+    "Avg_Wind_Speed": 8.0,
+    "Avg_Daily_Traffic": 12000,
+    "Traffic_Observation_Days": 30,
+    "Traffic_Data_Available": 1,
+    "Previous_Month_Complaints": 2,
+    "Complaints_Last_3_Months": 6,
+    "Average_Complaints_Last_3_Months": 2.0,
+    "Complaints_Last_6_Months": 11,
+    "Borough": "MANHATTAN"
 }
 
 
@@ -32,7 +36,12 @@ def test_health_endpoint():
     response = client.get("/health")
 
     assert response.status_code == 200
-    assert response.json()["status"] == "ok"
+
+    result = response.json()
+
+    assert result["status"] == "ok"
+    assert result["model"] == "Logistic Regression"
+    assert result["version"] == "2.0.0"
 
 
 # Check that one prediction works

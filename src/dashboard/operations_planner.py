@@ -5,19 +5,19 @@ import pandas as pd
 import streamlit as st
 
 
-
+# ---------------------------------------------------------
 # Page setup
-
+# ---------------------------------------------------------
 
 st.set_page_config(
-    page_title=" AI Road Maintenance Prediction Simulator",
+    page_title="RoadWise AI Scenario Simulator",
     layout="wide",
 )
 
 
-
+# ---------------------------------------------------------
 # Load data and saved model
-
+# ---------------------------------------------------------
 
 @st.cache_data
 def load_data():
@@ -26,7 +26,7 @@ def load_data():
 
 @st.cache_resource
 def load_model():
-    model_pipeline = joblib.load("models/decision_tree_model.pkl")
+    model_pipeline = joblib.load("models/best_model.pkl")
     model_features = joblib.load("models/feature_columns.pkl")
     return model_pipeline, model_features
 
@@ -35,21 +35,22 @@ data = load_data()
 pipeline, feature_columns = load_model()
 
 
-
+# ---------------------------------------------------------
 # Page title
+# ---------------------------------------------------------
 
-
-st.title(" AI Road Maintenance Prediction Simulator")
+st.title("AI Road Maintenance Prediction Simulator")
 
 st.write(
     "Create a future road-maintenance scenario and receive an automated "
-    "maintenance outlook, prioritized inspection list, simple "
+    "maintenance outlook, prioritized inspection list, plain-language "
     "explanations, and recommended next steps."
 )
 
 
+# ---------------------------------------------------------
 # Sidebar controls
-
+# ---------------------------------------------------------
 
 st.sidebar.header("Future Planning Scenario")
 
@@ -59,9 +60,11 @@ borough_options = sorted(
     data["Borough"].dropna().unique().tolist()
 )
 
-selected_borough = st.sidebar.selectbox(
-    "Borough",
-    borough_options,
+selected_borough = str(
+    st.sidebar.selectbox(
+        "Borough",
+        borough_options,
+    )
 )
 
 weather_scenario = st.sidebar.selectbox(
@@ -96,42 +99,38 @@ generate_forecast = st.sidebar.button(
 )
 
 
-
+# ---------------------------------------------------------
 # Scenario assumptions
-
+# ---------------------------------------------------------
 
 weather_settings = {
     "Normal": {
-        "temperature": 65.0,
-        "precipitation": 0.05,
-        "snowfall": 0.0,
-        "snow_depth": 0.0,
-        "weather_code": 1,
-        "wind_speed": 6.0,
+        "Avg_Temperature": 65.0,
+        "Total_Precipitation": 3.5,
+        "Total_Snowfall": 0.0,
+        "Avg_Snow_Depth": 0.0,
+        "Avg_Wind_Speed": 7.0,
     },
     "Heavy Rain": {
-        "temperature": 60.0,
-        "precipitation": 1.50,
-        "snowfall": 0.0,
-        "snow_depth": 0.0,
-        "weather_code": 63,
-        "wind_speed": 18.0,
+        "Avg_Temperature": 60.0,
+        "Total_Precipitation": 8.0,
+        "Total_Snowfall": 0.0,
+        "Avg_Snow_Depth": 0.0,
+        "Avg_Wind_Speed": 15.0,
     },
     "Snow": {
-        "temperature": 28.0,
-        "precipitation": 0.20,
-        "snowfall": 4.0,
-        "snow_depth": 0.35,
-        "weather_code": 73,
-        "wind_speed": 14.0,
+        "Avg_Temperature": 28.0,
+        "Total_Precipitation": 3.0,
+        "Total_Snowfall": 12.0,
+        "Avg_Snow_Depth": 3.0,
+        "Avg_Wind_Speed": 12.0,
     },
     "Extreme Heat": {
-        "temperature": 98.0,
-        "precipitation": 0.0,
-        "snowfall": 0.0,
-        "snow_depth": 0.0,
-        "weather_code": 0,
-        "wind_speed": 5.0,
+        "Avg_Temperature": 90.0,
+        "Total_Precipitation": 1.0,
+        "Total_Snowfall": 0.0,
+        "Avg_Snow_Depth": 0.0,
+        "Avg_Wind_Speed": 6.0,
     },
 }
 
@@ -149,9 +148,9 @@ scenario_bonus = {
 }
 
 
-
+# ---------------------------------------------------------
 # Helper functions
-
+# ---------------------------------------------------------
 
 def normalize_score(series):
     minimum = series.min()
@@ -344,45 +343,65 @@ def run_scenario(
     selected_date,
 ):
     scenario_profiles = base_profiles.copy()
-
     weather = weather_settings[selected_weather]
 
-    scenario_profiles["Total Traffic"] = (
+    scenario_profiles["Avg_Daily_Traffic"] = (
         scenario_profiles["Original Traffic"]
         * traffic_multiplier[selected_traffic]
     )
 
+    scenario_profiles["Traffic_Data_Available"] = (
+        scenario_profiles["Traffic_Data_Available"].fillna(0).astype(int)
+    )
+
+    scenario_profiles.loc[
+        scenario_profiles["Traffic_Data_Available"] == 0,
+        ["Avg_Daily_Traffic", "Traffic_Observation_Days"],
+    ] = 0
+
     model_rows = pd.DataFrame({
-        "Street Name": scenario_profiles["Street Name"],
-        "Borough": scenario_profiles["Borough"],
         "Year": selected_date.year,
         "Month": selected_date.month,
         "Latitude": scenario_profiles["Latitude"],
         "Longitude": scenario_profiles["Longitude"],
-        "temperature_2m (°F)": weather["temperature"],
-        "precipitation (inch)": weather["precipitation"],
-        "snowfall (inch)": weather["snowfall"],
-        "snow_depth (ft)": weather["snow_depth"],
-        "weather_code (wmo code)": weather["weather_code"],
-        "wind_speed_10m (mp/h)": weather["wind_speed"],
-        "Total Traffic": scenario_profiles["Total Traffic"],
+        "Avg_Temperature": weather["Avg_Temperature"],
+        "Total_Precipitation": weather["Total_Precipitation"],
+        "Total_Snowfall": weather["Total_Snowfall"],
+        "Avg_Snow_Depth": weather["Avg_Snow_Depth"],
+        "Avg_Wind_Speed": weather["Avg_Wind_Speed"],
+        "Avg_Daily_Traffic": scenario_profiles["Avg_Daily_Traffic"],
+        "Traffic_Observation_Days": scenario_profiles["Traffic_Observation_Days"],
+        "Traffic_Data_Available": scenario_profiles["Traffic_Data_Available"],
+        "Previous_Month_Complaints": scenario_profiles["Previous_Month_Complaints"],
+        "Complaints_Last_3_Months": scenario_profiles["Complaints_Last_3_Months"],
+        "Average_Complaints_Last_3_Months": scenario_profiles["Average_Complaints_Last_3_Months"],
+        "Complaints_Last_6_Months": scenario_profiles["Complaints_Last_6_Months"],
+        "Borough": scenario_profiles["Borough"],
     })
 
-    model_rows = model_rows[feature_columns]
+    missing_features = set(feature_columns).difference(model_rows.columns)
+    if missing_features:
+        raise KeyError(
+            f"Dashboard is missing model features: {sorted(missing_features)}"
+        )
 
+    model_rows = model_rows[feature_columns]
     predictions = pipeline.predict(model_rows)
     probabilities = pipeline.predict_proba(model_rows)[:, 1]
 
     scenario_profiles["Prediction"] = predictions
-
     scenario_profiles["Predicted Maintenance Risk"] = (
         probabilities * 100
     ).round(2)
 
+    scenario_profiles["Total Traffic"] = scenario_profiles["Avg_Daily_Traffic"]
+    scenario_profiles["Complaint Count"] = scenario_profiles[
+        "Complaints_Last_6_Months"
+    ]
+
     scenario_profiles["Complaint Score"] = normalize_score(
         scenario_profiles["Complaint Count"]
     )
-
     scenario_profiles["Traffic Score"] = normalize_score(
         scenario_profiles["Total Traffic"]
     )
@@ -392,9 +411,7 @@ def run_scenario(
         + scenario_profiles["Complaint Score"] * 0.30
         + scenario_profiles["Traffic Score"] * 0.20
         + scenario_bonus[selected_weather]
-    ).clip(
-        upper=100
-    ).round(1)
+    ).clip(upper=100).round(1)
 
     scenario_profiles["Maintenance Status"] = (
         scenario_profiles["Inspection Priority"]
@@ -405,36 +422,21 @@ def run_scenario(
         scenario_profiles["Complaint Count"].median()
     )
 
-    positive_traffic = scenario_profiles[
-        scenario_profiles["Total Traffic"] > 0
-    ]["Total Traffic"]
-
-    traffic_median = (
-        0
-        if positive_traffic.empty
-        else positive_traffic.median()
-    )
-
+    positive_traffic = scenario_profiles.loc[
+        scenario_profiles["Total Traffic"] > 0,
+        "Total Traffic",
+    ]
+    traffic_median = 0 if positive_traffic.empty else positive_traffic.median()
     scenario_profiles["Traffic Median"] = traffic_median
-
     scenario_profiles["Traffic Level"] = (
         scenario_profiles["Total Traffic"]
-        .apply(
-            lambda value: traffic_label(
-                value,
-                traffic_median,
-            )
-        )
+        .apply(lambda value: traffic_label(value, traffic_median))
     )
 
     scenario_profiles["Why It Was Flagged"] = scenario_profiles.apply(
-        lambda row: create_reason(
-            row,
-            selected_weather,
-        ),
+        lambda row: create_reason(row, selected_weather),
         axis=1,
     )
-
     scenario_profiles["Recommended Response"] = (
         scenario_profiles["Inspection Priority"]
         .apply(create_action)
@@ -442,28 +444,35 @@ def run_scenario(
 
     scenario_profiles = (
         scenario_profiles
-        .sort_values(
-            "Inspection Priority",
-            ascending=False,
-        )
+        .sort_values("Inspection Priority", ascending=False)
         .reset_index(drop=True)
     )
-
-    scenario_profiles["Priority Rank"] = (
-        scenario_profiles.index + 1
-    )
-
+    scenario_profiles["Priority Rank"] = scenario_profiles.index + 1
     return scenario_profiles
 
 
-
+# ---------------------------------------------------------
 # Generate simulation
+# ---------------------------------------------------------
 
 if generate_forecast:
 
     borough_data = data[
         data["Borough"] == selected_borough
     ].copy()
+
+    if "Date" in borough_data.columns:
+        borough_data["Date"] = pd.to_datetime(
+            borough_data["Date"],
+            errors="coerce",
+        )
+        borough_data = borough_data.sort_values(
+            ["Street Name", "Date"]
+        )
+    else:
+        borough_data = borough_data.sort_values(
+            ["Street Name", "Year", "Month"]
+        )
 
     all_road_profiles = (
         borough_data
@@ -474,15 +483,31 @@ if generate_forecast:
         .agg(
             Latitude=("Latitude", "mean"),
             Longitude=("Longitude", "mean"),
-            Complaint_Count=("Complaint Count", "sum"),
-            Average_Traffic=("Total Traffic", "mean"),
+            Original_Traffic=("Avg_Daily_Traffic", "mean"),
+            Traffic_Observation_Days=("Traffic_Observation_Days", "max"),
+            Traffic_Data_Available=("Traffic_Data_Available", "max"),
+            Previous_Month_Complaints=("Previous_Month_Complaints", "last"),
+            Complaints_Last_3_Months=("Complaints_Last_3_Months", "last"),
+            Average_Complaints_Last_3_Months=("Average_Complaints_Last_3_Months", "last"),
+            Complaints_Last_6_Months=("Complaints_Last_6_Months", "last"),
         )
-        .rename(
-            columns={
-                "Complaint_Count": "Complaint Count",
-                "Average_Traffic": "Original Traffic",
-            }
-        )
+        .rename(columns={"Original_Traffic": "Original Traffic"})
+    )
+
+    numeric_profile_columns = [
+        "Latitude",
+        "Longitude",
+        "Original Traffic",
+        "Traffic_Observation_Days",
+        "Traffic_Data_Available",
+        "Previous_Month_Complaints",
+        "Complaints_Last_3_Months",
+        "Average_Complaints_Last_3_Months",
+        "Complaints_Last_6_Months",
+    ]
+    all_road_profiles[numeric_profile_columns] = (
+        all_road_profiles[numeric_profile_columns]
+        .fillna(0)
     )
 
     all_road_profiles = (
@@ -493,7 +518,6 @@ if generate_forecast:
     )
 
     # Evaluate every available street profile in the selected borough.
-
     road_profiles = all_road_profiles.copy()
 
     if road_profiles.empty:
@@ -591,9 +615,9 @@ if generate_forecast:
         )
 
 
-        
+       
         # Maintenance outlook
-      
+       
 
         st.header("Maintenance Outlook")
 
@@ -605,19 +629,19 @@ if generate_forecast:
         )
 
         metric2.metric(
-           "Priority Roads",
-           f"{selected_action_count:,}",
+            "Roads Requiring Action",
+            f"{selected_action_count:,}",
         )
 
         metric3.metric(
-          "Expected Workload",
-           selected_impact["workload"],
-       )
+            "Expected Workload",
+            selected_impact["workload"],
+        )
 
         metric4.metric(
-          "Highest Priority Road",
-           highest_priority_road.title(),
-    )   
+            "Top Road",
+            highest_priority_road.title(),
+        )
 
         st.caption(
             f"The model evaluated every available street profile in "
@@ -626,7 +650,7 @@ if generate_forecast:
         )
 
 
-
+        
         # Automated maintenance brief
        
 
@@ -667,7 +691,7 @@ if generate_forecast:
         summary_text = (
             f"For {planning_date.strftime('%B %d, %Y')}, the simulator "
             f"evaluated all {len(selected_results):,} available road profiles in "
-            f"{selected_borough.title()}. Under "
+            f"{(selected_borough.title())}. Under "
             f"{weather_scenario.lower()} weather and "
             f"{traffic_level.lower()} traffic conditions, "
             f"{selected_action_count:,} roads require inspection action. "
@@ -679,7 +703,6 @@ if generate_forecast:
         )
 
         st.info(summary_text)
-
 
 
         # Scenario comparison
@@ -758,9 +781,8 @@ if generate_forecast:
             )
 
 
-    
         # Operational planning estimate
-      
+       
 
         st.header("Operational Planning Estimate")
 
@@ -793,9 +815,8 @@ if generate_forecast:
         )
 
 
-       
         # Priority road report
-  
+ 
         st.header(
             "Recommended Road Inspection Priorities"
         )
@@ -825,7 +846,7 @@ if generate_forecast:
 
         
         # Road explanations
-   
+       
 
         st.header("Why These Roads Were Prioritized")
 
@@ -871,8 +892,9 @@ if generate_forecast:
                 )
 
 
+       
         # Recommended next steps
-        
+       
 
         st.header("Recommended Next Steps")
 

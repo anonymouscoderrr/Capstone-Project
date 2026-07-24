@@ -17,9 +17,12 @@ from src.api.model_loader import make_prediction
 
 # Create the API app
 app = FastAPI(
-    title="Road Maintenance Risk Prediction API",
-    description="API for predicting road maintenance risk using a trained machine learning pipeline.",
-    version="1.0.0",
+    title="RoadWise AI Maintenance Risk Prediction API",
+    description=(
+        "REST API for predicting next-month road maintenance risk "
+        "using the final trained Logistic Regression pipeline."
+    ),
+    version="2.0.0",
 )
 
 # Let us know when the API starts
@@ -57,8 +60,11 @@ async def log_requests(request: Request, call_next):
 def health():
     # Record every health check request
     logger.info("Health endpoint accessed.")
-    return {"status": "ok"}
-
+    return {
+    "status": "ok",
+    "model": "Logistic Regression",
+    "version": "2.0.0"
+}
 
 # Predict maintenance risk for one road record
 @app.post("/predict", response_model=PredictionResponse)
